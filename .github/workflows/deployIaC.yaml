@@ -52,6 +52,7 @@ jobs:
         cluster-name: '${{ env.CLUSTER_NAME }}'
     - name: Install Runner
       run: |
+          kubectl create secret docker-registry runnersecret --docker-server=https://${{ env.REGISTRY }}/ --docker-username=${{ secrets.username }} --docker-password=${{ secrets.password }}
           kubectl apply -f ./runner/cert-manager.yaml 
           kubectl create -f ./runner/actions-runner-controller.yaml 
           kubectl create secret generic controller-manager  -n actions-runner-system --from-literal=github_token=${{ secrets.RUNNER_TOKEN }}
